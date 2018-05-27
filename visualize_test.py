@@ -14,7 +14,7 @@ class VisualizeTest(unittest.TestCase):
         	10: 300
 		}
 
-		self._writeDataFile();
+		self._writeDataFile()
 		self._deleteOutputFile()
 		self.visualizer = Visualizer(self.data_file, self.output_file)
 

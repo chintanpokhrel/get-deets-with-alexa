@@ -27,6 +27,6 @@ exports.getDefaultResponse = function(){
 	    "shouldEndSession": false
 	  }
 	};
-}
+};
 
 
