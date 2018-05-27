@@ -27,6 +27,6 @@ class Visualizer:
 			self.fig.savefig(self.opfile)
 
 if __name__ == '__main__':
-	v = Visualizer("data/data.json", "output/output.png")
+	v = Visualizer("data/billcycle_data.json", "output/output.png")
 	v.load()
 	v.savefig()
