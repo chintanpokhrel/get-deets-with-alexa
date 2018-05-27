@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const fs = require('fs')
 
 const default_response = require(__dirname + "/data/default_response.js");
 const cycle_reporter = require(__dirname + "/cycle_reporter.js");
@@ -23,7 +24,6 @@ app.post('/', async (req, res) => {
     json.response.outputSpeech.text = "Hi there!, how can I help you ?";
     break;
   case "IntentRequest":
-    console.log("correct intent");
     await act(req.body.request.intent.name);
     json.response.outputSpeech.text = "Done. Load the local webpage to see";
     break;
@@ -31,6 +31,38 @@ app.post('/', async (req, res) => {
   
   res.send(json);
 });
+
+app.get('/capture', (req, res) => {
+  res.sendFile(__dirname + '/capture.html')
+});
+
+app.post('/capture', async (req, res) => {
+  const filepath='data/data.json';
+  console.log(req.body);
+ 
+  let res_text = '';
+  await fs.readFile(filepath, 'utf-8', function onFileRead(err, data){
+    let json = [];
+    if(err){
+      console.log(err);
+    }else{
+      json = [].concat.apply([], JSON.parse(data));
+      console.log(json);
+      console.log(JSON.parse(data));
+    }
+    json.push(req.body);
+    
+    fs.writeFile(filepath, JSON.stringify(json), 'utf-8', (err)=>{
+      if(err) throw err;
+    });
+  });
+   
+  res_text = 'Details saved';
+    
+  res.send(res_text);
+});
+
+
 
 function act(intent){
   switch(intent){
@@ -42,4 +74,4 @@ function act(intent){
   }
 }
 
-app.listen(3000, ()=>console.log('Server started. Listening on localhost port 3000')); 
+app.listen(3030, ()=>console.log('Server started. Listening on localhost port 3030')); 
